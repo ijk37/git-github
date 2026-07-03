@@ -1,0 +1,15 @@
+*.pdf
+*.pptx
+*.docx
+*.xlsx
+*.png
+*.jpg
+*.jpeg
+*.zip
+*.7z
+*.pcap
+*.pcapng
+*.log
+*.env
+*.key
+

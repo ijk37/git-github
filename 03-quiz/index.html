@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Git and GitHub Quiz Hub</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #071b12;
+      color: #e8fff0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+    header {
+      background: linear-gradient(135deg, #063f24 0%, #087a34 55%, #0fbf3e 100%);
+      border: 1px solid #159447;
+      border-bottom: 4px solid #9be7b1;
+      border-radius: 14px;
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.35);
+      margin: 0 auto 2rem;
+      max-width: 980px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    .eyebrow {
+      color: #d8ffe4;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+    h1 { color: #fff; font-size: 2rem; line-height: 1.1; }
+    header p { color: #e8fff0; margin-top: 0.5rem; }
+    .grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      margin: 0 auto;
+      max-width: 980px;
+    }
+    .card {
+      background: #0d2619;
+      border: 1px solid #1d4f31;
+      border-radius: 10px;
+      color: inherit;
+      display: block;
+      min-height: 118px;
+      padding: 1.2rem;
+      text-decoration: none;
+      transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
+    }
+    .card:hover {
+      background: #12351f;
+      border-color: #0fbf3e;
+      transform: translateY(-2px);
+    }
+    .topic-id {
+      color: #9be7b1;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topic-title {
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-top: 0.35rem;
+    }
+    .q-count {
+      color: #9fb9a9;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+    footer {
+      color: #87a393;
+      font-size: 0.85rem;
+      margin-top: 2.5rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">Git and GitHub for Cybersecurity</div>
+    <h1>Quiz Hub</h1>
+    <p>Pick a topic, answer randomized questions, and review explanations.</p>
+  </header>
+  <main class="grid" id="grid"></main>
+  <footer>Static quiz app - no login, no backend, no tracking.</footer>
+
+  <script src="data.js"></script>
+  <script>
+    const grid = document.getElementById("grid");
+    TOPICS.forEach((topic) => {
+      const total = (QUESTIONS[topic.id] || []).length;
+      const attempt = attemptSizeFor(topic.id, total);
+      const card = document.createElement("a");
+      card.className = "card";
+      card.href = `quiz.html?topic=${encodeURIComponent(topic.id)}`;
+      card.innerHTML = `
+        <div class="topic-id">${topic.id === "mixed" ? "Mixed Review" : `Module ${topic.id}`}</div>
+        <div class="topic-title">${topic.title}</div>
+        <div class="q-count">${attempt} question attempt from ${total} available</div>
+      `;
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
+

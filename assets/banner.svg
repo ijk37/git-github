@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 260" width="1200" height="260" role="img" aria-label="Git and GitHub for Cybersecurity">
+  <defs>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#063F24"/>
+      <stop offset="0.5" stop-color="#0FBF3E"/>
+      <stop offset="1" stop-color="#087A34"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9BE7B1"/>
+      <stop offset="1" stop-color="#38BDF8"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1200" height="260" rx="20" fill="url(#green)"/>
+  <rect x="0" y="248" width="1200" height="12" fill="url(#accent)"/>
+  <g stroke="#D8FFE4" stroke-width="3" opacity="0.28" fill="none">
+    <path d="M940 70h80c28 0 44 16 44 44v34"/>
+    <path d="M940 130h130"/>
+    <path d="M940 190h80c28 0 44-16 44-44v-34"/>
+    <path d="M1034 92l42 38-42 38"/>
+  </g>
+  <g fill="#E8FFF0" opacity="0.85">
+    <circle cx="920" cy="70" r="9"/>
+    <circle cx="920" cy="130" r="9"/>
+    <circle cx="920" cy="190" r="9"/>
+    <circle cx="1092" cy="130" r="10"/>
+  </g>
+  <text x="64" y="86" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" letter-spacing="4" fill="#D8FFE4">GIT + GITHUB BASICS FOR SECURITY LEARNERS</text>
+  <text x="60" y="158" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="70" font-weight="800" fill="#ffffff">Git and GitHub</text>
+  <text x="64" y="205" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="26" font-weight="500" fill="#E9FFF0">Setup - Commands - Collaboration - Cybersecurity habits</text>
+</svg>
+

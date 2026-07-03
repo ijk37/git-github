@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Git and GitHub Quiz</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #071b12;
+      color: #e8fff0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+    .wrap {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: minmax(0, 1fr) 240px;
+      margin: 0 auto;
+      max-width: 1100px;
+    }
+    header, .panel, aside {
+      background: #0d2619;
+      border: 1px solid #1d4f31;
+      border-radius: 10px;
+    }
+    header {
+      grid-column: 1 / -1;
+      padding: 1rem 1.2rem;
+    }
+    header a { color: #9be7b1; text-decoration: none; }
+    h1 { font-size: 1.35rem; margin-top: 0.25rem; }
+    .panel { padding: 1.2rem; }
+    .meta { color: #9fb9a9; font-size: 0.9rem; margin-bottom: 1rem; }
+    .question { color: #fff; font-size: 1.15rem; font-weight: 750; line-height: 1.4; }
+    .options { display: grid; gap: 0.7rem; margin-top: 1rem; }
+    button {
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font: inherit;
+    }
+    .option {
+      background: #12351f;
+      border: 1px solid #24623d;
+      color: #e8fff0;
+      padding: 0.8rem 0.9rem;
+      text-align: left;
+    }
+    .option:hover { border-color: #0fbf3e; }
+    .option.correct { background: #0b4b28; border-color: #0fbf3e; }
+    .option.wrong { background: #432019; border-color: #eab308; }
+    .explain {
+      background: #092015;
+      border-left: 4px solid #0fbf3e;
+      color: #d8ffe4;
+      display: none;
+      margin-top: 1rem;
+      padding: 0.85rem;
+    }
+    .actions {
+      display: flex;
+      gap: 0.7rem;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+    .primary, .secondary {
+      padding: 0.75rem 1rem;
+    }
+    .primary { background: #0fbf3e; color: #032817; font-weight: 800; }
+    .secondary { background: #173c28; color: #e8fff0; }
+    aside {
+      align-self: start;
+      padding: 1rem;
+      position: sticky;
+      top: 1rem;
+    }
+    .scoreline { color: #9fb9a9; font-size: 0.9rem; margin-bottom: 0.8rem; }
+    .nav {
+      display: grid;
+      gap: 0.4rem;
+      grid-template-columns: repeat(5, 1fr);
+    }
+    .nav button {
+      aspect-ratio: 1;
+      background: #12351f;
+      color: #e8fff0;
+    }
+    .nav button.current { outline: 2px solid #0fbf3e; }
+    .nav button.answered { background: #087a34; }
+    .result {
+      background: #092015;
+      border: 1px solid #1d4f31;
+      border-radius: 10px;
+      display: none;
+      grid-column: 1 / -1;
+      padding: 1rem;
+    }
+    .review-item {
+      border-top: 1px solid #1d4f31;
+      margin-top: 1rem;
+      padding-top: 1rem;
+    }
+    @media (max-width: 820px) {
+      .wrap { grid-template-columns: 1fr; }
+      aside { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a href="index.html">Back to quiz hub</a>
+      <h1 id="title">Quiz</h1>
+    </header>
+    <section class="panel">
+      <div class="meta" id="meta"></div>
+      <div class="question" id="question"></div>
+      <div class="options" id="options"></div>
+      <div class="explain" id="explain"></div>
+      <div class="actions">
+        <button class="secondary" id="prev">Previous</button>
+        <button class="primary" id="next">Next</button>
+      </div>
+    </section>
+    <aside>
+      <div class="scoreline" id="scoreline"></div>
+      <div class="nav" id="nav"></div>
+      <button class="primary" id="finish" style="width:100%;margin-top:1rem;">Finish</button>
+      <button class="secondary" id="restart" style="width:100%;margin-top:0.6rem;">Restart</button>
+    </aside>
+    <section class="result" id="result"></section>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const topicId = params.get("topic") || "mixed";
+    const topic = TOPICS.find((item) => item.id === topicId) || TOPICS[TOPICS.length - 1];
+    const pool = QUESTIONS[topic.id] || QUESTIONS.mixed;
+    const state = { index: 0, answers: [], questions: pick(pool, attemptSizeFor(topic.id, pool.length)) };
+
+    const title = document.getElementById("title");
+    const meta = document.getElementById("meta");
+    const question = document.getElementById("question");
+    const options = document.getElementById("options");
+    const explain = document.getElementById("explain");
+    const nav = document.getElementById("nav");
+    const scoreline = document.getElementById("scoreline");
+    const result = document.getElementById("result");
+
+    function shuffle(items) {
+      return [...items].sort(() => Math.random() - 0.5);
+    }
+
+    function pick(items, count) {
+      return shuffle(items).slice(0, count).map((item) => {
+        const optionObjects = item.options.map((text, index) => ({ text, original: index }));
+        const shuffled = shuffle(optionObjects);
+        return {
+          q: item.q,
+          explain: item.explain,
+          options: shuffled.map((option) => option.text),
+          answer: shuffled.findIndex((option) => option.original === item.answer)
+        };
+      });
+    }
+
+    function render() {
+      const current = state.questions[state.index];
+      const selected = state.answers[state.index];
+      title.textContent = topic.title;
+      meta.textContent = `Question ${state.index + 1} of ${state.questions.length}`;
+      question.textContent = current.q;
+      options.innerHTML = "";
+      current.options.forEach((text, index) => {
+        const button = document.createElement("button");
+        button.className = "option";
+        button.textContent = text;
+        button.disabled = selected !== undefined;
+        if (selected !== undefined && index === current.answer) button.classList.add("correct");
+        if (selected === index && selected !== current.answer) button.classList.add("wrong");
+        button.addEventListener("click", () => {
+          state.answers[state.index] = index;
+          render();
+        });
+        options.appendChild(button);
+      });
+      explain.style.display = selected === undefined ? "none" : "block";
+      explain.textContent = current.explain;
+      renderNav();
+    }
+
+    function renderNav() {
+      const correct = state.answers.reduce((sum, answer, index) => {
+        return sum + (answer === state.questions[index].answer ? 1 : 0);
+      }, 0);
+      scoreline.textContent = `${state.answers.filter((answer) => answer !== undefined).length} answered - ${correct} correct so far`;
+      nav.innerHTML = "";
+      state.questions.forEach((_, index) => {
+        const button = document.createElement("button");
+        button.textContent = index + 1;
+        if (index === state.index) button.classList.add("current");
+        if (state.answers[index] !== undefined) button.classList.add("answered");
+        button.addEventListener("click", () => {
+          state.index = index;
+          render();
+        });
+        nav.appendChild(button);
+      });
+    }
+
+    function showResult() {
+      const correct = state.answers.reduce((sum, answer, index) => {
+        return sum + (answer === state.questions[index].answer ? 1 : 0);
+      }, 0);
+      const percent = Math.round((correct / state.questions.length) * 100);
+      result.style.display = "block";
+      result.innerHTML = `<h2>Score: ${correct}/${state.questions.length} (${percent}%)</h2>`;
+      state.questions.forEach((item, index) => {
+        const chosen = state.answers[index];
+        const div = document.createElement("div");
+        div.className = "review-item";
+        div.innerHTML = `
+          <strong>${index + 1}. ${item.q}</strong>
+          <p>Your answer: ${chosen === undefined ? "Not answered" : item.options[chosen]}</p>
+          <p>Correct answer: ${item.options[item.answer]}</p>
+          <p>${item.explain}</p>
+        `;
+        result.appendChild(div);
+      });
+      result.scrollIntoView({ behavior: "smooth" });
+    }
+
+    document.getElementById("prev").addEventListener("click", () => {
+      state.index = Math.max(0, state.index - 1);
+      render();
+    });
+    document.getElementById("next").addEventListener("click", () => {
+      state.index = Math.min(state.questions.length - 1, state.index + 1);
+      render();
+    });
+    document.getElementById("finish").addEventListener("click", showResult);
+    document.getElementById("restart").addEventListener("click", () => location.reload());
+
+    render();
+  </script>
+</body>
+</html>
+

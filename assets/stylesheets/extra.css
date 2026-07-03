@@ -1,0 +1,138 @@
+/* Git and GitHub for Cybersecurity - green, calm, and readable */
+
+:root {
+  --gg-green: #0fbf3e;
+  --gg-green-dark: #087a34;
+  --gg-green-deep: #063f24;
+  --gg-mint: #9be7b1;
+  --gg-sky: #38bdf8;
+  --gg-amber: #eab308;
+  --gg-ink: #17252a;
+  --gg-border: rgba(23, 37, 42, 0.14);
+
+  --md-primary-fg-color: #087a34;
+  --md-primary-fg-color--light: #0fbf3e;
+  --md-primary-fg-color--dark: #063f24;
+  --md-accent-fg-color: #0fbf3e;
+}
+
+[data-md-color-scheme="slate"] {
+  --gg-border: rgba(255, 255, 255, 0.16);
+  --md-primary-fg-color: #063f24;
+  --md-primary-fg-color--light: #0fbf3e;
+  --md-primary-fg-color--dark: #032817;
+  --md-accent-fg-color: #9be7b1;
+  --md-typeset-a-color: #9be7b1;
+}
+
+.md-header,
+.md-tabs {
+  box-shadow: none;
+}
+
+.md-tabs {
+  border-bottom: 3px solid var(--gg-green);
+}
+
+.md-header__title {
+  font-weight: 700;
+}
+
+.md-typeset h1,
+.md-typeset h2 {
+  font-weight: 750;
+  letter-spacing: 0;
+}
+
+.md-typeset h1 {
+  color: var(--gg-green-dark);
+  margin-bottom: 0.9rem;
+}
+
+[data-md-color-scheme="slate"] .md-typeset h1 {
+  color: var(--gg-mint);
+}
+
+.md-typeset h2 {
+  border-bottom: 2px solid var(--gg-green);
+  padding-bottom: 0.35rem;
+}
+
+.md-typeset table:not([class]) {
+  border: 1px solid var(--gg-border);
+  border-radius: 0.4rem;
+  overflow: hidden;
+}
+
+.md-typeset table:not([class]) th {
+  background: var(--gg-green-deep);
+  color: #fff;
+  font-weight: 700;
+}
+
+.md-typeset blockquote {
+  border-left: 0.2rem solid var(--gg-green);
+}
+
+.md-typeset code {
+  border-radius: 0.25rem;
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 0.45rem;
+}
+
+.ns-hero-grid {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  margin: 1.5rem 0 2rem;
+}
+
+.md-typeset .ns-card {
+  align-items: center;
+  border: 1px solid var(--gg-border);
+  border-left: 0.35rem solid var(--gg-green);
+  border-radius: 0.5rem;
+  color: var(--md-default-fg-color);
+  display: flex;
+  font-size: 1.05rem;
+  font-weight: 700;
+  gap: 0.55rem;
+  min-height: 5rem;
+  padding: 1rem;
+  text-decoration: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.md-typeset .ns-card:hover {
+  border-color: var(--gg-green);
+  box-shadow: 0 0.55rem 1.4rem rgba(8, 122, 52, 0.18);
+  transform: translateY(-2px);
+}
+
+.md-typeset .ns-card-notes { border-left-color: var(--gg-green-dark); }
+.md-typeset .ns-card-exercises { border-left-color: var(--gg-sky); }
+.md-typeset .ns-card-quiz { border-left-color: var(--gg-green); }
+.md-typeset .ns-card-projects { border-left-color: var(--gg-amber); }
+.md-typeset .ns-card-resources { border-left-color: var(--gg-green-deep); }
+
+.md-nav__item .md-nav__link--active {
+  font-weight: 700;
+}
+
+.md-footer {
+  margin-top: 2rem;
+}
+
+@media screen and (max-width: 44.9375em) {
+  .ns-hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .md-typeset .ns-card {
+    min-height: 4.25rem;
+  }
+}
+
