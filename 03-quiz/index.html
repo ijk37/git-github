@@ -98,13 +98,16 @@
     TOPICS.forEach((topic) => {
       const total = (QUESTIONS[topic.id] || []).length;
       const attempt = attemptSizeFor(topic.id, total);
+      const countLabel = topic.id === "mixed"
+        ? `${attempt} question attempt from ${total} available (proportional mix across all modules)`
+        : `${attempt} question attempt from ${total} available`;
       const card = document.createElement("a");
       card.className = "card";
       card.href = `quiz.html?topic=${encodeURIComponent(topic.id)}`;
       card.innerHTML = `
         <div class="topic-id">${topic.id === "mixed" ? "Mixed Review" : `Module ${topic.id}`}</div>
         <div class="topic-title">${topic.title}</div>
-        <div class="q-count">${attempt} question attempt from ${total} available</div>
+        <div class="q-count">${countLabel}</div>
       `;
       grid.appendChild(card);
     });

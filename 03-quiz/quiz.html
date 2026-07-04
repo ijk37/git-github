@@ -139,7 +139,10 @@
     const topicId = params.get("topic") || "mixed";
     const topic = TOPICS.find((item) => item.id === topicId) || TOPICS[TOPICS.length - 1];
     const pool = QUESTIONS[topic.id] || QUESTIONS.mixed;
-    const state = { index: 0, answers: [], questions: pick(pool, attemptSizeFor(topic.id, pool.length)) };
+    const rawQuestions = topic.id === "mixed"
+      ? pickProportionalMixed(attemptSizeFor("mixed", pool.length))
+      : shuffle(pool).slice(0, attemptSizeFor(topic.id, pool.length));
+    const state = { index: 0, answers: [], questions: shuffleOptions(rawQuestions) };
 
     const title = document.getElementById("title");
     const meta = document.getElementById("meta");
@@ -154,8 +157,8 @@
       return [...items].sort(() => Math.random() - 0.5);
     }
 
-    function pick(items, count) {
-      return shuffle(items).slice(0, count).map((item) => {
+    function shuffleOptions(rawQuestions) {
+      return rawQuestions.map((item) => {
         const optionObjects = item.options.map((text, index) => ({ text, original: index }));
         const shuffled = shuffle(optionObjects);
         return {
