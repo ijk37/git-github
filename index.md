@@ -7,15 +7,6 @@ hide:
 
 A beginner-friendly path for setting up Git, using GitHub, learning the core commands, and building habits that protect cybersecurity notes, labs, and code.
 
-<div class="resource-hub-nav" markdown>
-
-[:octicons-home-16: Home](https://ijk37.com/){ .hub-nav-button .hub-nav-home }
-
-[:octicons-graph-16: Data Science & AI](https://ijk37.com/data-science-ai/){ .hub-nav-button .hub-nav-dsai }
-
-[:octicons-shield-lock-16: Cyber Security](https://ijk37.com/cyber-security/){ .hub-nav-button .hub-nav-cyber }
-
-</div>
 <div class="ns-hero-grid" markdown>
 
 [:octicons-book-16: Notes](01-notes/README.md){ .ns-card .ns-card-notes }
